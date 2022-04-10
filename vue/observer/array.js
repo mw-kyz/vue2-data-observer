@@ -1,13 +1,22 @@
-import { ARRAY_METHODS } from "./config"
-import observeArr from "./observeArray"
+import { observe } from "./index"
+
+const ARRAY_METHODS = [
+  'push',
+  'pop',
+  'shift',
+  'unshift',
+  'splice',
+  'sort',
+  'reverse'
+]
 
 const originArrMethods = Array.prototype
 
-let arrMethods = Object.create(originArrMethods)
+let newArrMethods = Object.create(originArrMethods)
 
 ARRAY_METHODS.forEach(method => {
   // 重写数组方法
-  arrMethods[method] = function () {
+  newArrMethods[method] = function () {
     const args = Array.prototype.slice.call(arguments)
 
     // 执行原始的数组方法
@@ -34,6 +43,12 @@ ARRAY_METHODS.forEach(method => {
   }
 })
 
+function observeArr (arr) {
+  for (let i = 0; i < arr.length; i++) {
+    observe(arr[i])
+  }
+}
+
 export {
-  arrMethods
+  newArrMethods
 }

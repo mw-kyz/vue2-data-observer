@@ -1,27 +1,15 @@
-import { proxyData } from './proxy'
-import { observe } from './observe'
+import { initState } from './state'
 
-function initState (vm) {
-  const options = vm.$options
+function initMixin (Vue) {
+  Vue.prototype._init = function (options) {
+    const vm = this
 
-  if (options.data) {
-    initData(vm)
+    vm.$options = options
+
+    initState(vm)
   }
-}
-
-function initData(vm) {
-  let data = vm.$options.data
-
-   vm._data = data = typeof data === 'function' ? data.call(vm) : (data || {})
-
-  for (let key in data) {
-    // 将 vm._data.xxx 代理到 vm 上，这样就可以直接使用 vm.xxx 获取该属性
-    proxyData(vm, '_data', key)
-  }
-
-  observe(vm._data)
 }
 
 export {
-  initState
+  initMixin
 }

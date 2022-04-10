@@ -1,15 +1,9 @@
-import { initState } from './init'
+import { initMixin } from "./init"
 
 function Vue (options) {
   this._init(options)
 }
 
-Vue.prototype._init = function (options) {
-  const vm = this
-
-  vm.$options = options
-
-  initState(vm)
-}
+initMixin(Vue)
 
 export default Vue
